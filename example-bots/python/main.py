@@ -11,7 +11,7 @@ from game.logic.random_diamond import RandomDiamondLogic
 from colorama import init, Fore, Back, Style
 
 init()
-BASE_URL = "http://localhost:8081/api"
+BASE_URL = "http://34.79.54.189:8080/api"
 CONTROLLERS = {
     "Random": RandomLogic,
     "FirstDiamond": FirstDiamondLogic,
