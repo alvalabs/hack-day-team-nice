@@ -60,7 +60,7 @@ group.add_argument(
 )
 args = parser.parse_args()
 
-time_factor = int(args.time_factor)
+time_factor = 1
 api = Api(args.host)
 logic_controller = args.logic
 if logic_controller not in CONTROLLERS:
@@ -139,6 +139,7 @@ if not current_board_id:
 ###############################################################################
 board = bot.get_board(current_board_id)
 move_delay = board.data["minimumDelayBetweenMoves"] / 1000
+actual_move_delay = move_delay * time_factor
 
 ###############################################################################
 #
@@ -148,6 +149,7 @@ move_delay = board.data["minimumDelayBetweenMoves"] / 1000
 while True:
     # Find our info among the bots on the board
     board_bot = board.get_bot(bot)
+    board_bot["move_delay"] = actual_move_delay
 
     # Calculate next move
     delta_x, delta_y = bot_logic.next_move(board_bot, board)
@@ -167,8 +169,8 @@ while True:
         break
 
     # Don't spam the board more than it allows!
-    # sleep(move_delay * time_factor)
-    sleep(1)
+    sleep(actual_move_delay)
+    # sleep(1)
 
 ###############################################################################
 #

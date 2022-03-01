@@ -10,10 +10,11 @@ class ClosestDiamondLogic(object):
 
     def next_move(self, board_bot, board):
         props = board_bot["properties"]
+        move_delay = board_bot["move_delay"]
         current_position = board_bot["position"]
 
         # Analyze new state
-        if props["diamonds"] == 5:
+        if props["diamonds"] == 5 or should_return_to_base(current_position, props["base"], props["milliseconds_left"], move_delay):
             # Move to base if we are full of diamonds
             base = props["base"]
             self.goal_position = base
@@ -95,3 +96,10 @@ class ClosestDiamondLogic(object):
             distance += absolute_difference
 
         return distance
+
+    @staticmethod
+    def should_return_to_base(current_position, base_position, milliseconds_left, move_delay):
+        distance_to_base = ClosestDiamondLogic.manhattan_distance(current_position, base_position)
+        moves_left = (milliseconds_left / 1000) / move_delay
+
+        return distance_to_base <= (moves_left + 1)
