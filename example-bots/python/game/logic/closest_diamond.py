@@ -69,29 +69,28 @@ class ClosestDiamondLogic(object):
         return 0, 0
 
     @staticmethod
-    def closest_diamond(self, current_position, diamonds):
+    def closest_diamond(current_position, diamonds):
         diamond_distances = []
-        for i in enumerate(diamonds):
+        for (i, diamond) in enumerate(diamonds):
             diamond_position = diamonds[i].get('position')
-            distance = self.manhattan_distance(current_position, diamond_position)
+            distance = ClosestDiamondLogic.manhattan_distance(current_position, diamond_position)
             diamond_distances.append((distance, diamond_position["x"], diamond_position["y"], i))
 
-        diamond_distances.sort(key=self.sort_distance)
+        diamond_distances.sort(key=ClosestDiamondLogic.sort_distance)
 
         (distance, diamondX, diamondY, i) = diamond_distances[0]
         return i
 
     @staticmethod
     def sort_distance(e):
-        (distance, diamondX, diamondY) = e
+        (distance, diamondX, diamondY, index) = e
         return distance
 
     @staticmethod
     def manhattan_distance(point1, point2):
-        print('diamond position' + point2)
         distance = 0
-        for x1, x2 in zip(point1, point2):
-            difference = x2 - x1
+        for x1, x2 in zip((point1['x'], point1['y']), (point2['x'], point2['y'])):
+            difference = int(x2) - int(x1)
             absolute_difference = abs(difference)
             distance += absolute_difference
 
