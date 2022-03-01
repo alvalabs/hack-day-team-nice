@@ -12,6 +12,7 @@ class ClosestDiamondLogic(object):
         props = board_bot["properties"]
         move_delay = board.data["minimumDelayBetweenMoves"]
         current_position = board_bot["position"]
+        reset_button_postion = board.buttons[0].get('position')
 
         # Analyze new state
         if props["diamonds"] == 5 or ClosestDiamondLogic.should_return_to_base(current_position, props["base"], props["millisecondsLeft"], move_delay):
@@ -19,27 +20,32 @@ class ClosestDiamondLogic(object):
             base = props["base"]
             self.goal_position = base
         elif len(board.diamonds) < 4:
-            self.goal_position = board.buttons[0].get('position')
+            self.goal_position = reset_button_postion
         elif self.goal_position is None or position_equals(
             current_position, self.goal_position
         ):
             # Move towards a random diamond on board
             tries = len(board.diamonds)
             index = self.closest_diamond(current_position, board.diamonds)
+            distance_to_closest_diamond = ClosestDiamondLogic.manhattan_distance(current_position, board.diamonds[index].get('position'))
+            distance_to_reset_button = ClosestDiamondLogic.manhattan_distance(current_position, reset_button_postion)
 
-            while tries > 0:
-              diamond = board.diamonds[index]
-              # Check if we can pick this diamond up before moving to it
-              worth = diamond["properties"]["points"]
-              space_left = props["inventorySize"] - props["diamonds"]
-              if diamond["properties"]["points"] > space_left:
-                # Nope, no space left in inventory. Try another one
-                index = (index + 1) % len(board.diamonds)
-                tries -= 1
-              else:
-                # Ok walk towards this diamond
-                self.goal_position = board.diamonds[index].get('position')
-                break
+            if distance_to_reset_button < distance_to_closest_diamond:
+                self.goal_position = reset_button_postion
+            else:
+                while tries > 0:
+                  diamond = board.diamonds[index]
+                  # Check if we can pick this diamond up before moving to it
+                  worth = diamond["properties"]["points"]
+                  space_left = props["inventorySize"] - props["diamonds"]
+                  if diamond["properties"]["points"] > space_left:
+                    # Nope, no space left in inventory. Try another one
+                    index = (index + 1) % len(board.diamonds)
+                    tries -= 1
+                  else:
+                    # Ok walk towards this diamond
+                    self.goal_position = board.diamonds[index].get('position')
+                    break
 
 
         if self.goal_position:
