@@ -149,7 +149,6 @@ actual_move_delay = move_delay * time_factor
 while True:
     # Find our info among the bots on the board
     board_bot = board.get_bot(bot)
-    board_bot["move_delay"] = actual_move_delay
 
     # Calculate next move
     delta_x, delta_y = bot_logic.next_move(board_bot, board)
