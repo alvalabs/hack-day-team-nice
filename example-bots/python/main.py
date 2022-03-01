@@ -8,6 +8,7 @@ from game.util import *
 from game.logic.random import RandomLogic
 from game.logic.first_diamond import FirstDiamondLogic
 from game.logic.random_diamond import RandomDiamondLogic
+from game.logic.closest_diamond import ClosestDiamondLogic
 from colorama import init, Fore, Back, Style
 
 init()
@@ -16,6 +17,7 @@ CONTROLLERS = {
     "Random": RandomLogic,
     "FirstDiamond": FirstDiamondLogic,
     "RandomDiamond": RandomDiamondLogic,
+    "ClosestDiamond": ClosestDiamondLogic,
 }
 
 ###############################################################################
