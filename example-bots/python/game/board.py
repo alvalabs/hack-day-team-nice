@@ -6,6 +6,7 @@ class Board(object):
         self.gameObjects = data["gameObjects"]
         self.bots = self._get_by_type("BotGameObject")
         self.diamonds = self._get_by_type("DiamondGameObject")
+        self.buttons = self._get_by_type("DiamondButtonGameObject")
         self.data = data
 
     def _get_by_type(self, t):

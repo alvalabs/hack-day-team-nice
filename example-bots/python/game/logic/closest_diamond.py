@@ -18,6 +18,8 @@ class ClosestDiamondLogic(object):
             # Move to base if we are full of diamonds
             base = props["base"]
             self.goal_position = base
+        elif len(board.diamonds) < 4:
+            self.goal_position = board.buttons[0].get('position')
         elif self.goal_position is None or position_equals(
             current_position, self.goal_position
         ):
